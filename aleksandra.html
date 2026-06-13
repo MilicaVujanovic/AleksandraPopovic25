@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aleksandra Invites You</title>
+  <meta name="description" content="Web invitation for Aleksandra's 25th birthday.">
+  <style>
+    :root {
+      --ink: #704c58;
+      --pink: #dc4f87;
+      --pink-deep: #bf3e70;
+      --paper-soft: #fbf3ec;
+      --rose-muted: #b07a86;
+      --glow: 0 22px 40px rgba(226, 186, 198, 0.34);
+      --shadow: 0 24px 60px rgba(94, 67, 77, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 14px 28px;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255, 211, 226, 0.9), transparent 26%),
+        radial-gradient(circle at top right, rgba(249, 230, 203, 0.9), transparent 22%),
+        linear-gradient(180deg, #fbf6f1, #f3e7db 55%, #f7f1ea);
+    }
+
+    .shell {
+      width: min(100%, 460px);
+    }
+
+    .poster-wrap {
+      position: relative;
+      border-radius: 34px;
+      padding: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.36));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+
+    .poster {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 28px;
+      box-shadow: 0 14px 28px rgba(74, 54, 63, 0.16);
+      background: #f3e6d8;
+    }
+
+    .panel {
+      position: relative;
+      overflow: hidden;
+      margin-top: 14px;
+      border-radius: 40px;
+      padding: 34px 18px 26px;
+      text-align: center;
+      background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.68), transparent 32%),
+        linear-gradient(180deg, rgba(255,255,255,0.52), rgba(255,255,255,0.2)),
+        var(--paper-soft);
+      box-shadow:
+        0 20px 42px rgba(214, 183, 191, 0.22),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+      border: 1px solid rgba(255, 255, 255, 0.78);
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.32;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(244, 193, 213, 0.42), transparent 18%),
+        radial-gradient(circle at 82% 18%, rgba(248, 225, 194, 0.38), transparent 20%),
+        radial-gradient(circle at 92% 92%, rgba(255, 208, 224, 0.26), transparent 16%),
+        repeating-linear-gradient(
+          0deg,
+          rgba(110, 83, 92, 0.03) 0,
+          rgba(110, 83, 92, 0.03) 1px,
+          transparent 1px,
+          transparent 7px
+        );
+      pointer-events: none;
+    }
+
+    .title,
+    .event-strip,
+    .actions,
+    .hint,
+    .hint-rule,
+    .title-rule {
+      position: relative;
+      z-index: 1;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 1.9rem;
+      line-height: 1;
+      color: var(--pink-deep);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .title-rule,
+    .hint-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: #dc8fa8;
+    }
+
+    .title-rule {
+      margin-top: 16px;
+    }
+
+    .hint-rule {
+      margin-top: 18px;
+      color: #dda0b2;
+    }
+
+    .title-rule::before,
+    .title-rule::after,
+    .hint-rule::before,
+    .hint-rule::after {
+      content: "";
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220, 143, 168, 0.9), transparent);
+    }
+
+    .title-rule::before,
+    .title-rule::after {
+      width: 92px;
+      max-width: 26%;
+    }
+
+    .hint-rule::before,
+    .hint-rule::after {
+      width: 84px;
+      max-width: 24%;
+    }
+
+    .title-rule span,
+    .hint-rule span {
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .event-strip {
+      display: grid;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .event-card {
+      border-radius: 28px;
+      padding: 18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.34)),
+        var(--paper-soft);
+      border: 1px solid rgba(242, 225, 231, 0.92);
+      box-shadow:
+        0 14px 28px rgba(224, 190, 199, 0.2),
+        inset 0 1px 0 rgba(255,255,255,0.76);
+      text-align: left;
+    }
+
+    .event-card-layout {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .event-copy {
+      min-width: 0;
+    }
+
+    .event-label {
+      display: block;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--rose-muted);
+    }
+
+    .event-value {
+      display: block;
+      margin-top: 10px;
+      font-size: 1.18rem;
+      line-height: 1.15;
+      color: var(--pink-deep);
+    }
+
+    .icon-button {
+      flex: 0 0 auto;
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #d46d8c;
+      background:
+        radial-gradient(circle at 32% 28%, rgba(255,255,255,0.9), rgba(255,255,255,0.2) 35%, transparent 36%),
+        linear-gradient(180deg, #ffe8ee, #ffd7e3);
+      box-shadow: var(--glow);
+      transition: transform 140ms ease, box-shadow 140ms ease;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.78);
+    }
+
+    .icon-button:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 18px 34px rgba(226, 186, 198, 0.42);
+    }
+
+    .icon-button::before {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.38);
+    }
+
+    .icon-button svg {
+      width: 28px;
+      height: 28px;
+      fill: currentColor;
+      position: relative;
+      z-index: 1;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      font: inherit;
+      transition: transform 140ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary,
+    .btn-tertiary {
+      color: #fff;
+      background: linear-gradient(180deg, #e7a0b0, #cf7f96);
+      box-shadow:
+        0 18px 30px rgba(210, 149, 168, 0.3),
+        inset 0 0 0 2px rgba(255,255,255,0.38);
+      border: 2px solid rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 1rem;
+      padding: 16px 22px;
+    }
+
+    .btn-tertiary {
+      width: 100%;
+    }
+
+    .btn-secondary {
+      color: #9c3f67;
+      background: #fff;
+      box-shadow: 0 10px 20px rgba(92, 66, 76, 0.1);
+      padding: 12px 18px;
+    }
+
+    .hint {
+      margin: 22px auto 0;
+      max-width: 300px;
+      font-size: 0.96rem;
+      line-height: 1.5;
+      color: #9c707c;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(85, 58, 68, 0.48);
+      backdrop-filter: blur(6px);
+      z-index: 20;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .rsvp-modal {
+      width: min(100%, 470px);
+      max-height: min(92vh, 900px);
+      overflow: auto;
+      border-radius: 38px;
+      padding: 22px 18px 20px;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.65), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,0.54), rgba(255,255,255,0.18)),
+        var(--paper-soft);
+      box-shadow:
+        0 30px 70px rgba(66, 46, 54, 0.26),
+        inset 0 1px 0 rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,255,255,0.82);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 0;
+      cursor: pointer;
+      color: var(--pink-deep);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.96), rgba(255,255,255,0.6) 46%, rgba(255,234,241,0.92));
+      box-shadow: 0 10px 24px rgba(92, 66, 76, 0.12);
+      font-size: 1.35rem;
+    }
+
+    .modal-kicker {
+      margin: 0 56px 10px 0;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-size: 0.8rem;
+      font-weight: bold;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--rose-muted);
+    }
+
+    .modal-title {
+      margin: 0;
+      color: var(--pink-deep);
+      font-size: 1.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .modal-text {
+      margin: 10px 0 0;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #8d6b77;
+    }
+
+    #rsvp-form {
+      margin-top: 22px;
+      display: grid;
+      gap: 16px;
+    }
+
+    #rsvp-form label,
+    .section-label,
+    .guest-heading {
+      display: grid;
+      gap: 8px;
+      text-align: left;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-size: 0.84rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #9b7081;
+    }
+
+    .text-input,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(228, 194, 206, 0.95);
+      border-radius: 20px;
+      padding: 13px 16px;
+      font: inherit;
+      font-size: 0.98rem;
+      color: var(--ink);
+      background: linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.64));
+      outline: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.62);
+    }
+
+    .text-input:focus,
+    textarea:focus {
+      border-color: rgba(201, 56, 114, 0.9);
+      box-shadow: 0 0 0 3px rgba(220, 79, 135, 0.12);
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .attendance-toggle {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 12px 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.76), rgba(255,255,255,0.48));
+      border: 1px solid rgba(228, 194, 206, 0.95);
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      color: var(--ink);
+      box-shadow: 0 8px 18px rgba(220, 188, 198, 0.12);
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease, color 140ms ease;
+    }
+
+    .toggle-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .toggle-btn.selected {
+      color: #fff;
+      background: linear-gradient(135deg, #ef5b98, #c93872);
+      box-shadow: 0 12px 22px rgba(201, 56, 114, 0.24);
+    }
+
+    .hidden-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .guest-section {
+      display: none;
+      gap: 16px;
+    }
+
+    .guest-section.visible {
+      display: grid;
+    }
+
+    .guest-counter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-radius: 24px;
+      padding: 14px 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.44));
+      border: 1px solid rgba(228, 194, 206, 0.95);
+      box-shadow: 0 10px 22px rgba(220, 188, 198, 0.12);
+    }
+
+    .counter-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .counter-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 0;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: white;
+      background: linear-gradient(135deg, #ef5b98, #c93872);
+      box-shadow: 0 12px 22px rgba(201, 56, 114, 0.24);
+    }
+
+    .counter-value {
+      min-width: 28px;
+      text-align: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.2rem;
+      color: var(--pink-deep);
+    }
+
+    .guest-names {
+      display: grid;
+      gap: 12px;
+    }
+
+    .guest-card {
+      border-radius: 28px;
+      padding: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.42));
+      border: 1px solid rgba(228, 194, 206, 0.92);
+      box-shadow: 0 10px 22px rgba(220, 188, 198, 0.12);
+    }
+
+    .guest-heading {
+      margin-bottom: 10px;
+    }
+
+    .guest-card-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .rsvp-status {
+      min-height: 20px;
+      margin: 4px 0 0;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-size: 0.88rem;
+      color: #8d5b6e;
+    }
+
+    .rsvp-status.error {
+      color: #b2466d;
+    }
+
+    .submit-row {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .rsvp-thanks {
+      display: none;
+      margin-top: 18px;
+      border-radius: 28px;
+      padding: 24px 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.76), rgba(255,255,255,0.46));
+      border: 1px solid rgba(228, 194, 206, 0.92);
+      box-shadow: 0 10px 22px rgba(220, 188, 198, 0.12);
+      text-align: center;
+    }
+
+    .rsvp-thanks.visible {
+      display: block;
+    }
+
+    .thanks-mark {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, #ef5b98, #c93872);
+      box-shadow: 0 12px 22px rgba(201, 56, 114, 0.24);
+      font-size: 1.25rem;
+    }
+
+    .rsvp-thanks h3 {
+      margin: 0;
+      color: var(--pink-deep);
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: white;
+      }
+
+      .panel {
+        display: none;
+      }
+
+      .shell,
+      .poster-wrap {
+        width: 100%;
+        max-width: none;
+        box-shadow: none;
+        padding: 0;
+        background: transparent;
+      }
+
+      .poster {
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .panel {
+        padding: 28px 16px 24px;
+      }
+
+      .title {
+        font-size: 1.6rem;
+      }
+
+      .event-value {
+        font-size: 1.06rem;
+      }
+
+      .rsvp-modal {
+        padding: 18px 14px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="poster-wrap">
+      <img class="poster" src="slike/pozivnica-poster.png" alt="Aleksandra birthday invitation poster.">
+    </div>
+
+    <section class="panel">
+      <h1 class="title">RSVP</h1>
+      <div class="title-rule" aria-hidden="true"><span>&#9825;</span></div>
+
+      <div class="event-strip">
+        <div class="event-card">
+          <div class="event-card-layout">
+            <div class="event-copy">
+              <span class="event-label">When</span>
+              <span class="event-value">17h</span>
+            </div>
+            <span class="icon-button" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M7 2.75A2.25 2.25 0 0 1 9.25 5v.25h5.5V5a.75.75 0 0 1 1.5 0v.25H17A3.25 3.25 0 0 1 20.25 8.5v8.25A3.25 3.25 0 0 1 17 20H7A3.25 3.25 0 0 1 3.75 16.75V8.5A3.25 3.25 0 0 1 7 5.25h.75V5A2.25 2.25 0 0 1 7 2.75ZM5.25 10v6.75c0 .97.78 1.75 1.75 1.75h10c.97 0 1.75-.78 1.75-1.75V10H5.25Zm2.5 2.25a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm4.25 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm4.25 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-card-layout">
+            <div class="event-copy">
+              <span class="event-label">Where</span>
+              <span class="event-value">Malo Brdo, Podgorica</span>
+            </div>
+            <a class="icon-button" href="https://www.google.com/maps/dir//Malo+Brdo,+Podgorica,+Montenegro/@42.4525435,19.2477947,15z/data=!4m18!1m8!3m7!1s0x134d94cc9960485f:0xa5e6bb5c5a381dda!2sMalo+Brdo,+Podgorica,+Montenegro!3b1!8m2!3d42.4518485!4d19.2519304!16s%2Fg%2F1z3t9b00q!4m8!1m0!1m5!1m1!1s0x134d94cc9960485f:0xa5e6bb5c5a381dda!2m2!1d19.2519304!2d42.4518485!3e3?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noreferrer" aria-label="Open location in Google Maps">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2c4.14 0 7.5 3.33 7.5 7.44 0 5.22-6.06 11.41-6.32 11.67a1.7 1.7 0 0 1-2.37 0C10.56 20.85 4.5 14.66 4.5 9.44 4.5 5.33 7.86 2 12 2Zm0 4.12a3.32 3.32 0 1 0 0 6.64 3.32 3.32 0 0 0 0-6.64Z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-tertiary" type="button" id="open-rsvp">Confirm Attendance</button>
+      </div>
+
+      <p class="hint">Disco glam invite details and your RSVP in one place.</p>
+      <div class="hint-rule" aria-hidden="true"><span>&#10023;</span></div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="rsvp-modal" aria-hidden="true">
+    <div class="rsvp-modal" role="dialog" aria-modal="true" aria-labelledby="rsvp-title">
+      <button class="modal-close" type="button" id="close-rsvp" aria-label="Close">&times;</button>
+      <p class="modal-kicker">Aleksandra's 25th Birthday</p>
+      <h2 class="modal-title" id="rsvp-title">RSVP</h2>
+      <p class="modal-text">Let me know if you're coming so I can save you a spot, a slice of cake, and a disco glam moment.</p>
+
+      <form id="rsvp-form" novalidate>
+        <label>
+          Full name
+          <input id="rsvp-name" class="text-input" type="text" autocomplete="name" placeholder="Your full name" required>
+        </label>
+
+        <div class="section-label">
+          Are you coming?
+          <div class="attendance-toggle">
+            <button class="toggle-btn" type="button" data-value="yes">Yes, I'm coming</button>
+            <button class="toggle-btn" type="button" data-value="no">No, I can't make it</button>
+          </div>
+          <input id="rsvp-attend" class="hidden-input" type="hidden" value="">
+        </div>
+
+        <div class="guest-section" id="guest-section">
+          <div class="section-label">
+            Number of guests
+            <div class="guest-counter">
+              <div class="counter-controls">
+                <button class="counter-btn" type="button" id="guest-minus">&minus;</button>
+                <span class="counter-value" id="guest-count">1</span>
+                <button class="counter-btn" type="button" id="guest-plus">+</button>
+              </div>
+            </div>
+            <input id="rsvp-guests" class="hidden-input" type="hidden" value="1">
+          </div>
+          <div class="guest-names" id="guest-names"></div>
+        </div>
+
+        <label>
+          Note
+          <textarea id="rsvp-message" placeholder="For example: can't wait to celebrate!"></textarea>
+        </label>
+
+        <button class="btn btn-primary" type="submit" id="rsvp-submit">Send RSVP</button>
+        <div class="rsvp-status" id="rsvp-status" role="status"></div>
+      </form>
+
+      <div class="rsvp-thanks" id="rsvp-thanks">
+        <div class="thanks-mark">25</div>
+        <h3>Thank You</h3>
+        <p class="modal-text">Your RSVP has been sent successfully. See you at the celebration.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("rsvp-modal");
+    const openRsvp = document.getElementById("open-rsvp");
+    const closeRsvp = document.getElementById("close-rsvp");
+    const rsvpForm = document.getElementById("rsvp-form");
+    const rsvpStatus = document.getElementById("rsvp-status");
+    const rsvpThanks = document.getElementById("rsvp-thanks");
+    const guestSection = document.getElementById("guest-section");
+    const guestInput = document.getElementById("rsvp-guests");
+    const guestCount = document.getElementById("guest-count");
+    const guestNames = document.getElementById("guest-names");
+    const attendanceInput = document.getElementById("rsvp-attend");
+    const submitButton = document.getElementById("rsvp-submit");
+    const toggleButtons = document.querySelectorAll(".attendance-toggle .toggle-btn");
+
+    function openModal() {
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      rsvpForm.style.display = "";
+      rsvpThanks.classList.remove("visible");
+      submitButton.disabled = false;
+      submitButton.textContent = "Send RSVP";
+      clearStatus();
+      resetToggleState();
+      document.getElementById("rsvp-name").focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    function showStatus(message, type) {
+      rsvpStatus.textContent = message;
+      rsvpStatus.className = "rsvp-status " + type;
+    }
+
+    function clearStatus() {
+      rsvpStatus.textContent = "";
+      rsvpStatus.className = "rsvp-status";
+    }
+
+    function renderGuestFields(count) {
+      guestNames.innerHTML = "";
+
+       if (count <= 1) {
+        return;
+      }
+
+      for (let i = 2; i <= count; i += 1) {
+        const card = document.createElement("div");
+        card.className = "guest-card";
+
+        const heading = document.createElement("div");
+        heading.className = "guest-heading";
+        heading.textContent = "Guest " + i;
+
+        const grid = document.createElement("div");
+        grid.className = "guest-card-grid";
+        grid.innerHTML =
+          '<label>First name<input class="text-input child-name-input" type="text" placeholder="First name" data-kind="first"></label>' +
+          '<label>Last name<input class="text-input child-name-input" type="text" placeholder="Last name" data-kind="last"></label>';
+
+        card.appendChild(heading);
+        card.appendChild(grid);
+        guestNames.appendChild(card);
+      }
+    }
+
+    function resetToggleState() {
+      rsvpForm.reset();
+      attendanceInput.value = "";
+      toggleButtons.forEach(function (button) {
+        button.classList.remove("selected");
+      });
+      guestInput.value = "1";
+      guestCount.textContent = "1";
+      guestSection.classList.remove("visible");
+      renderGuestFields(1);
+    }
+
+    openRsvp.addEventListener("click", openModal);
+    closeRsvp.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", function (event) {
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && modal.classList.contains("open")) {
+        closeModal();
+      }
+    });
+
+    toggleButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        toggleButtons.forEach(function (item) {
+          item.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+        attendanceInput.value = button.dataset.value;
+        clearStatus();
+
+        if (button.dataset.value === "yes") {
+          guestSection.classList.add("visible");
+          renderGuestFields(Number(guestInput.value));
+        } else {
+          guestSection.classList.remove("visible");
+        }
+      });
+    });
+
+    document.getElementById("guest-minus").addEventListener("click", function () {
+      const nextValue = Math.max(1, Number(guestInput.value) - 1);
+      guestInput.value = String(nextValue);
+      guestCount.textContent = String(nextValue);
+      guestNames.style.display = nextValue > 1 ? "grid" : "none";
+      renderGuestFields(nextValue);
+    });
+
+    document.getElementById("guest-plus").addEventListener("click", function () {
+      const nextValue = Math.min(8, Number(guestInput.value) + 1);
+      guestInput.value = String(nextValue);
+      guestCount.textContent = String(nextValue);
+      guestNames.style.display = nextValue > 1 ? "grid" : "none";
+      renderGuestFields(nextValue);
+    });
+
+    rsvpForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      clearStatus();
+
+      const name = document.getElementById("rsvp-name").value.trim();
+      const attendance = attendanceInput.value;
+      const guests = attendance === "yes" ? guestInput.value : "0";
+      const message = document.getElementById("rsvp-message").value.trim();
+
+      const guestRows = Array.from(document.querySelectorAll(".guest-card"));
+      const guestNamesList = guestRows
+        .map(function (card) {
+          const inputs = card.querySelectorAll(".child-name-input");
+          const first = inputs[0] ? inputs[0].value.trim() : "";
+          const last = inputs[1] ? inputs[1].value.trim() : "";
+          return (first + " " + last).trim();
+        })
+        .filter(Boolean);
+
+      if (!name || !attendance) {
+        showStatus("Please enter your name and choose whether you are coming.", "error");
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
+
+      const attendanceLabel = attendance === "yes" ? "Yes, I'm coming" : "No, I can't make it";
+
+      const emailData = {
+        _subject: "RSVP - Aleksandra 25 - " + name,
+        _template: "box",
+        "Full name": name,
+        "Attendance": attendanceLabel,
+        "Number of guests": guests,
+        "Guest names": guestNamesList.length ? guestNamesList.join(", ") : "-",
+        "Note": message || "-",
+        "Event": "Aleksandra's 25th birthday, 15 June 2026 at 17h, Malo Brdo, Podgorica",
+        "Map": "https://www.google.com/maps/dir//Malo+Brdo,+Podgorica,+Montenegro/@42.4525435,19.2477947,15z/data=!4m18!1m8!3m7!1s0x134d94cc9960485f:0xa5e6bb5c5a381dda!2sMalo+Brdo,+Podgorica,+Montenegro!3b1!8m2!3d42.4518485!4d19.2519304!16s%2Fg%2F1z3t9b00q!4m8!1m0!1m5!1m1!1s0x134d94cc9960485f:0xa5e6bb5c5a381dda!2m2!1d19.2519304!2d42.4518485!3e3?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D",
+        _captcha: "false"
+      };
+
+      fetch("https://formsubmit.co/ajax/milica2001vujanovic@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(emailData)
+      })
+        .then(function (response) {
+          return response.json().then(function (data) {
+            return { ok: response.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          if (result.ok && (result.data.success === true || result.data.success === "true")) {
+            rsvpForm.style.display = "none";
+            rsvpThanks.classList.add("visible");
+            return;
+          }
+
+          showStatus(result.data.message || "Sending failed. Please try again.", "error");
+          submitButton.disabled = false;
+          submitButton.textContent = "Send RSVP";
+        })
+        .catch(function () {
+          showStatus("Sending failed. Please check your internet connection and try again.", "error");
+          submitButton.disabled = false;
+          submitButton.textContent = "Send RSVP";
+        });
+    });
+
+    guestNames.style.display = "none";
+    renderGuestFields(1);
+  </script>
+</body>
+</html>
